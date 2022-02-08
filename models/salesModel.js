@@ -30,16 +30,23 @@ const getAll = async () => {
   return sale;
 };
 
-const getById = async () => {
+const getById = async (id) => {
+  const query = `SELECT product_id, quantity, date
+    FROM sales_products AS saleProduct JOIN sales AS sale ON saleProduct.sale_id = sale.id
+    WHERE sale_id = ?`;
+  const [sale] = await connection.execute(query, [id]);
 
+  return sale;
 };
 
-const update = async () => {
-
+const update = async (id, { productId, quantity }) => {
+  const query = 'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?';
+  await connection.execute(query, [quantity, id, productId]);
 };
 
-const remove = async () => {
-  
+const remove = async (id) => {
+  const query = 'DELETE FROM sales WHERE id = ?';
+  await connection.execute(query, [id]);
 };
 
 module.exports = {
