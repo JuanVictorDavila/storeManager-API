@@ -34,12 +34,12 @@ const update = async (id, { name, quantity }) => {
 };
 
 const remove = async (id) => {
-  const query = 'SELECT FROM products id = ?';
+  const query = 'DELETE FROM products WHERE id = ?';
   await connection.execute(query, [id]);
 };
 
-const updateProductsQuantity = async (products, sign) => {
-  const query = `UPDATE products SET quantity = quantity ${sign} ? WHERE id = ?`;
+const updateProductsQuantity = async (products, qtd) => {
+  const query = `UPDATE products SET quantity = quantity ${qtd} ? WHERE id = ?`;
   await Promise.all(products.map(
     ({ products_id: id, quantity }) => connection.execute(query, [quantity, id]),
   ));
