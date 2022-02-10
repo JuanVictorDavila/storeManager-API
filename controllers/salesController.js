@@ -1,8 +1,8 @@
-const salesService = require('../servises/salesServices');
+const salesService = require('../services/salesService');
 
 const validateSale = (req, _res, next) => {
   const products = req.body;
-  const validation = salesService.validateTheSale(products);
+  const validation = salesService.validateSale(products);
   if (validation.error) return next(validation.error);
   next();
 };
@@ -34,7 +34,7 @@ const update = async (req, res, next) => {
   res.status(200).json(newSale);
 };
 
-const remove = async (req, res, next) => {
+const del = async (req, res, next) => {
   const { id } = req.params;
   const sale = await salesService.del(id);
   if (sale.error) return next(sale.error);
@@ -47,5 +47,5 @@ module.exports = {
   getAll,
   getById,
   update,
-  remove,
+  del,
 };
