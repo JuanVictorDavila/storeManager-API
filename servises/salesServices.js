@@ -68,7 +68,7 @@ const update = async (id, newSale) => {
 const remove = async (id) => {
   const sale = await salesModel.getById(id);
 
-  if (sale.length === 0) return { error: { code: 'not Found', message: 'Sale not found' } };
+  if (sale.length === 0) return { error: { code: 'notFound', message: 'Sale not found' } };
 
   await salesModel.remove(id);
   await productModel.updateProductsQuantity(sale, '');
