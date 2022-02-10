@@ -10,7 +10,7 @@ const validateProducts = ({ name, quantity }) => {
 const create = async ({ name, quantity }) => {
   const product = await productModel.getByName(name);
 
-  if (product) return { error: { code: 'Já existente', message: 'Produto já existe.' } };
+  if (product) return { error: { code: 'alreadyExist', message: 'product already exist' } };
 
   const { id } = await productModel.create({ name, quantity });
   
@@ -22,7 +22,7 @@ const getAll = async () => { productModel.getAll(); };
 const getById = async (id) => {
   const product = await productModel.getById(id);
 
-  if (!product) return { error: { code: 'Não encontrado', message: 'Produto não encontrado.' } };
+  if (!product) return { error: { code: 'notFound', message: 'product not found' } };
 
   return product;
 };
@@ -30,7 +30,7 @@ const getById = async (id) => {
 const update = async (id, { name, quantity }) => {
   const product = await productModel.getById(id);
 
-  if (!product) return { error: { code: 'Não encontrado', message: 'Produto não encontrado.' } };
+  if (!product) return { error: { code: 'notFound', message: 'product not found' } };
 
   await productModel.update(id, { name, quantity });
 
@@ -40,7 +40,7 @@ const update = async (id, { name, quantity }) => {
 const remove = async (id) => {
   const product = await productModel.getById(id);
 
-  if (!product) return { error: { code: 'Não encontrado', message: 'Produto não encontrado.' } };
+  if (!product) return { error: { code: 'notFound', message: 'product not found' } };
 
   await productModel.remove(id);
 
