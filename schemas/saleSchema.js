@@ -1,5 +1,5 @@
 // REF: validação usando Joi https://www.youtube.com/watch?v=xXjyqcDTkD0
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 
 module.exports = Joi.object({
   productId: Joi.number().required().messages({

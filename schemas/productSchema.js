@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 // REF: validação usando Joi https://www.youtube.com/watch?v=xXjyqcDTkD0
 
 module.exports = Joi.object({
