@@ -1,7 +1,3 @@
-### Termos e acordos
-
-Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe
-
 # Boas vindas ao repositório do projeto Store Manager!
 
 ---
@@ -9,22 +5,16 @@ Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e
 # Sumário
 
 - [Habilidades](#habilidades)
-- [Entregáveis](#entregáveis)
   - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
   - [Desenvolvimento](#desenvolvimento)
-  - [Data de entrega](#data-de-entrega)
-- [Instruções para entregar seu projeto](#instruções-para-entregar-seu-projeto)
-  - [Antes de começar a desenvolver](#antes-de-começar-a-desenvolver)
-  - [Durante o desenvolvimento](#durante-o-desenvolvimento)
 - [Como desenvolver](#como-desenvolver)
-  - [Padrões e conexões](#padrões-e-conexões)
   - [Conexão com o Banco](#conexão-com-o-banco)
   - [Tabelas](#tabelas)
 - [Requisitos do projeto](#requisitos-do-projeto)
   - [Linter](#linter)
   - [Lista de requisitos](#lista-de-requisitos)
 
-    `Obrigatórios`
+    `Requisitos Primários`
     - [1 - Crie um endpoint para o cadastro de produtos](#1---crie-um-endpoint-para-o-cadastro-de-produtos)
     - [2 - Crie um endpoint para listar os produtos](#2---crie-um-endpoint-para-listar-os-produtos)
     - [3 - Crie um endpoint para atualizar um produto](#3---crie-um-endpoint-para-atualizar-um-produto)
@@ -35,7 +25,7 @@ Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e
     - [8 - Escreva testes para cobrir 35% das camadas da sua aplicação](#8---escreva-testes-para-cobrir-35-das-camadas-da-sua-aplicação)
     - [9 - Escreva testes para cobrir 40% das camadas da sua aplicação](#9---escreva-testes-para-cobrir-40-das-camadas-da-sua-aplicação)
 
-    `Bônus`
+    `Requisitos Secundários`
 
     - [10 - Crie um endpoint para deletar uma venda](#10---crie-um-endpoint-para-deletar-uma-venda)
     - [11 - Atualize a quantidade de produtos](#11---atualize-a-quantidade-de-produtos)
