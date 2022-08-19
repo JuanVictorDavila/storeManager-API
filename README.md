@@ -32,15 +32,12 @@
     - [12 - Valide a quantidade de produtos](#12---valide-a-quantidade-de-produtos)
     - [13 - Escreva testes para cobrir 50% das camadas da sua aplicação](#13---escreva-testes-para-cobrir-50-das-camadas-da-sua-aplicação)
     - [14 - Escreva testes para cobrir 60% das camadas da sua aplicação](#14---escreva-testes-para-cobrir-60-das-camadas-da-sua-aplicação)
-- [Depois de terminar o desenvolvimento](#depois-de-terminar-o-desenvolvimento)
-- [Revisando um pull request](#revisando-um-pull-request)
-- [Avisos Finais](#avisos-finais)
 
 ---
 
 # Habilidades
 
-Nesse projeto, você será capaz de:
+Nesse projeto, eu fui capaz de:
 
 - Entender o funcionamento da camada de Model;
 - Delegar responsabilidades específicas para essa camada;
@@ -800,7 +797,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-## Bônus
+## Requisitos Secundários
 
 ### 10 - Crie um endpoint para deletar uma venda
 
