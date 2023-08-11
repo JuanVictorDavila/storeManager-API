@@ -5,9 +5,9 @@ require("dotenv").config();
 
 describe("Products", () => {
   const products = [
-    { name: "Martelo de Thor", price:10 ,quantity: 10 },
-    { name: "Traje de encolhimento", price:20, quantity: 20 },
-    { name: "Escudo do Capitão América", price:30, quantity: 30 },
+    { name: "Martelo de Thor", description: "toy", price:10 ,quantity: 10 },
+    { name: "Traje de encolhimento", description: "costume",price:20, quantity: 20 },
+    { name: "Escudo do Capitão América", description: "toy",price:30, quantity: 30 },
   ];
   const url = `http://localhost:${process.env.PORT}`;
   const INVALID_ID = 99999;
@@ -34,9 +34,9 @@ describe("Products", () => {
   });
 
   beforeEach(async () => {
-    const values = products.map(({ name, price, quantity }) => [name, price, quantity]);
+    const values = products.map(({ name, description, price, quantity }) => [name, description, price, quantity]);
     await connection.query(
-      "INSERT INTO StoreManager.products (name, price, quantity) VALUES ?",
+      "INSERT INTO StoreManager.products (name, description, price, quantity) VALUES ?",
       [values]
     );
   });
@@ -59,6 +59,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products/`, {
           // name: "Olho de Thundera",
+          description: "toy",
           price: 1,
           quantity: 2,
         })
@@ -73,12 +74,14 @@ describe("Products", () => {
           );
         });
     })
-    it("Será validado que o campo quantity esteja presente no body da requisição", async()=> {
+
+    it("Será validade que o campo description esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
-          name: "Olho de Thundera",
+          name:"Olho de Thundera",
+          // description: "toy",
           price: 1,
-          // quantity: 2,
+          quantity: 2
         })
         .expect("status", 400)
         .then((res) => {
@@ -87,14 +90,16 @@ describe("Products", () => {
           hasMessageField(body);
           const { message } = body;
           expect(message).toEqual(
-            '\"quantity\" is required'
+            '\"description\" is required'
           );
         });
     })
+
     it("Será validade que o campo price esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
           name:"Olho de Thundera",
+          description: "toy",
           // price: 1,
           quantity: 2
         })
@@ -110,10 +115,31 @@ describe("Products", () => {
         });
     })
 
+    it("Será validado que o campo quantity esteja presente no body da requisição", async()=> {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Olho de Thundera",
+          description: "toy",
+          price: 1,
+          // quantity: 2,
+        })
+        .expect("status", 400)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '\"quantity\" is required'
+          );
+        });
+    })
+    
     it("Será validado que não é possível criar um produto com o nome menor que 3 caracteres", async () => {
       await frisby
         .post(`${url}/products/`, {
-          name: "Do",
+          name: "It",
+          description: "toy",
           price: 10,
           quantity: 100,
         })
@@ -133,6 +159,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products/`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: 10,
           quantity: 100,
         })
@@ -146,10 +173,31 @@ describe("Products", () => {
         });
     });
 
+    it("Será validado que não é possível criar um produto com a descrição menor que 3 caracteres", async () => {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Beyblade",
+          description: "It",
+          price: 10,
+          quantity: 100,
+        })
+        .expect("status", 422)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '"description" length must be at least 3 characters long'
+          );
+        });
+    });
+
     it("Será validado que não é possível criar um produto com valor menor que zero", async () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          description: "item",
           price: -1,
           quantity: 1,
         })
@@ -169,6 +217,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          description: "item",
           price: 0,
           quantity: 1,
         })
@@ -188,6 +237,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          description: "item",
           price: 1,
           quantity: -1,
         })
@@ -207,6 +257,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          description: "item",
           price: 1,
           quantity: 0,
         })
@@ -226,6 +277,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          description: "item",
           price: 1,
           quantity: "string",
         })
@@ -243,6 +295,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Arco do Gavião Arqueiro",
+          description: "toy",
           price: 1,
           quantity: 1,
         })
@@ -270,25 +323,31 @@ describe("Products", () => {
           let { body } = res;
           body = JSON.parse(body);
           const firstProductName = body[0].name;
+          const firstProductDescription = body[0].description;
           const firstProductPrice = body[0].price;
           const firstQuantityProduct = body[0].quantity;
           const secondProductName = body[1].name;
+          const secondProductDescription = body[1].description;
           const secondProductPrice = body[1].price;
           const secondQuantityProduct = body[1].quantity;
           const thirdProductName = body[2].name;
+          const thirdProductDescription = body[2].description;
           const thirdProductPrice = body[2].price;
           const thirdQuantityProduct = body[2].quantity;
 
           expect(body[0]).toHaveProperty('id');
           expect(firstProductName).toEqual("Martelo de Thor");
+          expect(firstProductDescription).toEqual("toy");
           expect(firstProductPrice).toEqual("10.00");
           expect(firstQuantityProduct).toEqual(10);
           expect(body[1]).toHaveProperty('id');
           expect(secondProductName).toEqual("Traje de encolhimento");
+          expect(secondProductDescription).toEqual("costume");
           expect(secondProductPrice).toEqual("20.00");
           expect(secondQuantityProduct).toEqual(20);
           expect(body[2]).toHaveProperty('id');
           expect(thirdProductName).toEqual("Escudo do Capitão América");
+          expect(thirdProductDescription).toEqual("toy");
           expect(thirdProductPrice).toEqual("30.00");
           expect(thirdQuantityProduct).toEqual(30);
         });
@@ -312,6 +371,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Armadura do Homem de Ferro",
+          description: "costume",
           price: 10,
           quantity: 40,
         })
@@ -328,9 +388,11 @@ describe("Products", () => {
         .then((secondResponse) => {
           const { json } = secondResponse;
           const productName = json.name;
+          const productDescription = json.description;
           const productPrice = json.price;
           const quantityProduct = json.quantity;
           expect(productName).toEqual("Armadura do Homem de Ferro");
+          expect(productDescription).toEqual("costume");
           expect(productPrice).toEqual("10.00");
           expect(json).toHaveProperty("id");
           expect(quantityProduct).toEqual(40);
@@ -354,7 +416,8 @@ describe("Products", () => {
 
       await frisby
         .put(`${url}/products/${resultProductId}`, {
-          name: "Do",
+          name: "It",
+          description: "item",
           price: 10,
           quantity: 10,
         })
@@ -384,6 +447,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: -1,
           quantity: 1,
         })
@@ -413,6 +477,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: 0,
           quantity: 1,
         })
@@ -442,6 +507,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: 1,
           quantity: -1,
         })
@@ -471,6 +537,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: 1,
           quantity: 0,
         })
@@ -500,6 +567,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          description: "toy",
           price: 1,
           quantity: "string",
         })
@@ -527,6 +595,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Machado de Thor",
+          description: "toy",
           price: 20,
           quantity: 20,
         })
@@ -534,9 +603,11 @@ describe("Products", () => {
         .then((secondResponse) => {
           const { json } = secondResponse;
           const productName = json.name;
+          const productDescription = json.description;
           const productPrice = json.price;
           const quantityProduct = json.quantity;
           expect(productName).toEqual("Machado de Thor");
+          expect(productDescription).toEqual("toy");
           expect(productPrice).toEqual(20);
           expect(quantityProduct).toEqual(20);
         });
@@ -546,6 +617,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${INVALID_ID}`,{
           name: "produto inexistente",
+          description: "item",
           price: 1,
           quantity: 1,
         })
@@ -581,6 +653,7 @@ describe("Products", () => {
           body = JSON.parse(body);
           expect(body).toHaveProperty("id");
           expect(body).toHaveProperty("name");
+          expect(body).toHaveProperty("description");
           expect(body).toHaveProperty("price");
           expect(body).toHaveProperty("quantity");
         });

@@ -7,6 +7,7 @@ USE StoreManager;
 CREATE TABLE products (
     id INT NOT NULL auto_increment,
     name VARCHAR(30) NOT NULL,
+    description VARCHAR(30) NOT NULL,
     price DECIMAL(7,2) NOT NULL,
     quantity INT NOT NULL,
     PRIMARY KEY(id)
