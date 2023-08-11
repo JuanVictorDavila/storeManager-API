@@ -9,6 +9,7 @@ CREATE TABLE products (
     name VARCHAR(30) NOT NULL,
     description VARCHAR(50) NOT NULL,
     category VARCHAR(30) NOT NULL,
+    manufacturer VARCHAR(30) NOT NULL,
     price DECIMAL(7,2) NOT NULL,
     quantity INT NOT NULL,
     PRIMARY KEY(id)

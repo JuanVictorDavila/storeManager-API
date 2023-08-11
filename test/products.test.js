@@ -5,9 +5,9 @@ require("dotenv").config();
 
 describe("Products", () => {
   const products = [
-    { name: "Martelo de Thor", description: "toy", category:"toy", price:10 ,quantity: 10 },
-    { name: "Traje de encolhimento", description: "costume", category: "costume", price:20, quantity: 20 },
-    { name: "Escudo do Capitão América", description: "toy", category: "toy", price:30, quantity: 30 },
+    { name: "Martelo de Thor", description: "toy", category:"toy", manufacturer: "Hasbro", price:10 ,quantity: 10 },
+    { name: "Traje de encolhimento", description: "costume", category: "costume", manufacturer: "Hasbro", price:20, quantity: 20 },
+    { name: "Escudo do Capitão América", description: "toy", category: "toy", manufacturer: "Hasbro", price:30, quantity: 30 },
   ];
   const url = `http://localhost:${process.env.PORT}`;
   const INVALID_ID = 99999;
@@ -34,9 +34,19 @@ describe("Products", () => {
   });
 
   beforeEach(async () => {
-    const values = products.map(({ name, description, category, price, quantity }) => [name, description, category, price, quantity]);
+    const values = products.map((
+      { 
+        name,
+        description, 
+        category, 
+        manufacturer, 
+        price, 
+        quantity,
+      }) => [name, description, category, manufacturer, price, quantity]
+    );
+    
     await connection.query(
-      "INSERT INTO StoreManager.products (name, description, category, price, quantity) VALUES ?",
+      "INSERT INTO StoreManager.products (name, description, category, manufacturer, price, quantity) VALUES ?",
       [values]
     );
   });
@@ -61,6 +71,7 @@ describe("Products", () => {
           // name: "Olho de Thundera",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 2,
         })
@@ -82,6 +93,7 @@ describe("Products", () => {
           name:"Olho de Thundera",
           // description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 2
         })
@@ -103,6 +115,7 @@ describe("Products", () => {
           name: "Olho de Thundera",
           description: "toy",
           // category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 2,
         })
@@ -118,12 +131,35 @@ describe("Products", () => {
         });
     })
 
+    it("Será validado que o campo manufacturer esteja presente no body da requisição", async()=>{
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Olho de Thundera",
+          description: "toy",
+          category: "toy",
+          // manufacturer: "Hasbro",
+          price: 1,
+          quantity: 2,
+        })
+        .expect("status", 400)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '\"manufacturer\" is required'
+          );
+        });
+    })
+
     it("Será validade que o campo price esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
           name:"Olho de Thundera",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           // price: 1,
           quantity: 2
         })
@@ -144,6 +180,7 @@ describe("Products", () => {
         .post(`${url}/products/`, {
           name: "Olho de Thundera",
           description: "toy",
+          manufacturer: "Hasbro",
           category: "toy",
           price: 1,
           // quantity: 2,
@@ -166,6 +203,7 @@ describe("Products", () => {
           name: "It",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 100,
         })
@@ -187,6 +225,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 100,
         })
@@ -206,6 +245,7 @@ describe("Products", () => {
           name: "Beyblade",
           description: "It",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 100,
         })
@@ -227,6 +267,7 @@ describe("Products", () => {
           name: "Beyblade",
           description: "toy",
           category: "It",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 100,
         })
@@ -242,12 +283,35 @@ describe("Products", () => {
         });
     });
 
+    it("Será validado que não é possível criar um produto com a fabricação menor que 2 caracteres", async () => {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Beyblade",
+          description: "toy",
+          category: "Ita",
+          manufacturer: "H",
+          price: 10,
+          quantity: 100,
+        })
+        .expect("status", 422)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '"manufacturer" length must be at least 2 characters long'
+          );
+        });
+    });
+
     it("Será validado que não é possível criar um produto com valor menor que zero", async () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: -1,
           quantity: 1,
         })
@@ -269,6 +333,7 @@ describe("Products", () => {
           name: "Produto do Batista",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 0,
           quantity: 1,
         })
@@ -290,6 +355,7 @@ describe("Products", () => {
           name: "Produto do Batista",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: -1,
         })
@@ -311,6 +377,7 @@ describe("Products", () => {
           name: "Produto do Batista",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 0,
         })
@@ -332,6 +399,7 @@ describe("Products", () => {
           name: "Produto do Batista",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: "string",
         })
@@ -351,6 +419,7 @@ describe("Products", () => {
           name: "Arco do Gavião Arqueiro",
           description: "toy",
           category: "general",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 1,
         })
@@ -361,11 +430,14 @@ describe("Products", () => {
           const productName = body.name;
           const productDescription = body.description;
           const productCategory = body.category;
+          const productManufacturer = body.manufacturer;
           const productPrice = body.price;
           const quantityProduct = body.quantity;
+
           expect(productName).toEqual("Arco do Gavião Arqueiro");
           expect(productDescription).toEqual("toy");
           expect(productCategory).toEqual("general");
+          expect(productManufacturer).toEqual("Hasbro");
           expect(productPrice).toEqual(1)
           expect(quantityProduct).toEqual(1);
           expect(body).toHaveProperty("id");
@@ -386,14 +458,19 @@ describe("Products", () => {
           const firstProductCategory = body[0].category;
           const firstProductPrice = body[0].price;
           const firstQuantityProduct = body[0].quantity;
+          const firstProductManufacturer = body[0].manufacturer;
+
           const secondProductName = body[1].name;
           const secondProductDescription = body[1].description;
           const secondProductCategory = body[1].category;
+          const secondProductManufacturer = body[1].manufacturer;
           const secondProductPrice = body[1].price;
           const secondQuantityProduct = body[1].quantity;
+          
           const thirdProductName = body[2].name;
           const thirdProductDescription = body[2].description;
           const thirdProductCategory = body[2].category;
+          const thirdProductManufacturer = body[2].manufacturer;
           const thirdProductPrice = body[2].price;
           const thirdQuantityProduct = body[2].quantity;
 
@@ -401,18 +478,23 @@ describe("Products", () => {
           expect(firstProductName).toEqual("Martelo de Thor");
           expect(firstProductDescription).toEqual("toy");
           expect(firstProductCategory).toEqual("toy");
+          expect(firstProductManufacturer).toEqual("Hasbro");
           expect(firstProductPrice).toEqual("10.00");
           expect(firstQuantityProduct).toEqual(10);
+
           expect(body[1]).toHaveProperty('id');
           expect(secondProductName).toEqual("Traje de encolhimento");
           expect(secondProductDescription).toEqual("costume");
-          expect(secondProductCategory).toEqual("costume")
+          expect(secondProductCategory).toEqual("costume");
+          expect(secondProductManufacturer).toEqual("Hasbro");
           expect(secondProductPrice).toEqual("20.00");
           expect(secondQuantityProduct).toEqual(20);
+
           expect(body[2]).toHaveProperty('id');
           expect(thirdProductName).toEqual("Escudo do Capitão América");
           expect(thirdProductDescription).toEqual("toy");
           expect(thirdProductCategory).toEqual("toy");
+          expect(thirdProductManufacturer).toEqual("Hasbro");
           expect(thirdProductPrice).toEqual("30.00");
           expect(thirdQuantityProduct).toEqual(30);
         });
@@ -438,6 +520,7 @@ describe("Products", () => {
           name: "Armadura do Homem de Ferro",
           description: "costume",
           category: "costume",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 40,
         })
@@ -456,11 +539,14 @@ describe("Products", () => {
           const productName = json.name;
           const productDescription = json.description;
           const productCategory = json.category;
+          const productManufacturer = json.manufacturer;
           const productPrice = json.price;
           const quantityProduct = json.quantity;
+
           expect(productName).toEqual("Armadura do Homem de Ferro");
           expect(productDescription).toEqual("costume");
           expect(productCategory).toEqual("costume");
+          expect(productManufacturer).toEqual("Hasbro");
           expect(productPrice).toEqual("10.00");
           expect(json).toHaveProperty("id");
           expect(quantityProduct).toEqual(40);
@@ -487,6 +573,7 @@ describe("Products", () => {
           name: "It",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 10,
           quantity: 10,
         })
@@ -518,6 +605,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: -1,
           quantity: 1,
         })
@@ -549,6 +637,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 0,
           quantity: 1,
         })
@@ -580,6 +669,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: -1,
         })
@@ -611,6 +701,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 0,
         })
@@ -642,6 +733,7 @@ describe("Products", () => {
           name: "Martelo de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: "string",
         })
@@ -671,6 +763,7 @@ describe("Products", () => {
           name: "Machado de Thor",
           description: "toy",
           category: "toy",
+          manufacturer: "Hasbro",
           price: 20,
           quantity: 20,
         })
@@ -680,11 +773,14 @@ describe("Products", () => {
           const productName = json.name;
           const productDescription = json.description;
           const productCategory = json.category;
+          const productManufacturer = json.manufacturer;
           const productPrice = json.price;
           const quantityProduct = json.quantity;
+
           expect(productName).toEqual("Machado de Thor");
           expect(productDescription).toEqual("toy");
           expect(productCategory).toEqual("toy");
+          expect(productManufacturer).toEqual("Hasbro");
           expect(productPrice).toEqual(20);
           expect(quantityProduct).toEqual(20);
         });
@@ -696,6 +792,7 @@ describe("Products", () => {
           name: "produto inexistente",
           description: "item",
           category: "general",
+          manufacturer: "Hasbro",
           price: 1,
           quantity: 1,
         })
@@ -729,10 +826,12 @@ describe("Products", () => {
         .then((secondResponse) => {
           let { body } = secondResponse;
           body = JSON.parse(body);
+
           expect(body).toHaveProperty("id");
           expect(body).toHaveProperty("name");
           expect(body).toHaveProperty("description");
           expect(body).toHaveProperty("category");
+          expect(body).toHaveProperty("manufacturer");
           expect(body).toHaveProperty("price");
           expect(body).toHaveProperty("quantity");
         });
