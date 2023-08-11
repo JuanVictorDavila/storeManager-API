@@ -1,11 +1,12 @@
 const productsService = require('../services/productsService');
 
 const validateProducts = (req, _res, next) => {
-  const { name, description, category, price, quantity } = req.body;
+  const { name, description, category, manufacturer, price, quantity } = req.body;
   const validation = productsService.validateProducts({ 
     name, 
     description, 
-    category, 
+    category,
+    manufacturer,
     price, 
     quantity, 
   });
@@ -16,8 +17,17 @@ const validateProducts = (req, _res, next) => {
 };
 
 const create = async (req, res, next) => {
-  const { name, description, category, price, quantity } = req.body;
-  const product = await productsService.create({ name, description, category, price, quantity });
+  const { name, description, category, manufacturer, price, quantity } = req.body;
+  const product = await productsService.create(
+    { 
+      name,
+      description,
+      category,
+      manufacturer,
+      price,
+      quantity,
+    },
+  );
 
   if (product.error) return next(product.error);
   
@@ -38,13 +48,14 @@ const getById = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   const { id } = req.params;
-  const { name, description, category, price, quantity } = req.body;
+  const { name, description, category, manufacturer, price, quantity } = req.body;
   const product = await productsService.update(
     id, 
     { 
       name, 
       description, 
       category, 
+      manufacturer,
       price, 
       quantity, 
     },
