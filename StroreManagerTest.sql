@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS StoreManager;
+DROP DATABASE IF EXISTS StoreManagerTest;
 
-CREATE DATABASE StoreManager;
+CREATE DATABASE StoreManagerTest;
 
-USE StoreManager;
+USE StoreManagerTest;
 
 CREATE TABLE products (
     id INT NOT NULL auto_increment,

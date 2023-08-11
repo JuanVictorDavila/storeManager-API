@@ -5,9 +5,9 @@ require("dotenv").config();
 
 describe("Products", () => {
   const products = [
-    { name: "Martelo de Thor", quantity: 10 },
-    { name: "Traje de encolhimento", quantity: 20 },
-    { name: "Escudo do Capitão América", quantity: 30 },
+    { name: "Martelo de Thor", price:10 ,quantity: 10 },
+    { name: "Traje de encolhimento", price:20, quantity: 20 },
+    { name: "Escudo do Capitão América", price:30, quantity: 30 },
   ];
   const url = `http://localhost:${process.env.PORT}`;
   const INVALID_ID = 99999;
@@ -34,9 +34,9 @@ describe("Products", () => {
   });
 
   beforeEach(async () => {
-    const values = products.map(({ name, quantity }) => [name, quantity]);
+    const values = products.map(({ name, price, quantity }) => [name, price, quantity]);
     await connection.query(
-      "INSERT INTO StoreManager.products (name, quantity) VALUES ?",
+      "INSERT INTO StoreManager.products (name, price, quantity) VALUES ?",
       [values]
     );
   });
@@ -59,6 +59,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products/`, {
           // name: "Olho de Thundera",
+          price: 1,
           quantity: 2,
         })
         .expect("status", 400)
@@ -72,10 +73,11 @@ describe("Products", () => {
           );
         });
     })
-    it("Será validado que o campo quantity esteja presente no body da requisição", async()=>{
+    it("Será validado que o campo quantity esteja presente no body da requisição", async()=> {
       await frisby
         .post(`${url}/products/`, {
           name: "Olho de Thundera",
+          price: 1,
           // quantity: 2,
         })
         .expect("status", 400)
@@ -89,10 +91,30 @@ describe("Products", () => {
           );
         });
     })
-    it("Será validado que não é possível criar um produto com o nome menor que 5 caracteres", async () => {
+    it("Será validade que o campo price esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
-          name: "Rai",
+          name:"Olho de Thundera",
+          // price: 1,
+          quantity: 2
+        })
+        .expect("status", 400)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '\"price\" is required'
+          );
+        });
+    })
+
+    it("Será validado que não é possível criar um produto com o nome menor que 3 caracteres", async () => {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Do",
+          price: 10,
           quantity: 100,
         })
         .expect("status", 422)
@@ -102,7 +124,7 @@ describe("Products", () => {
           hasMessageField(body);
           const { message } = body;
           expect(message).toEqual(
-            '"name" length must be at least 5 characters long'
+            '"name" length must be at least 3 characters long'
           );
         });
     });
@@ -111,6 +133,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products/`, {
           name: "Martelo de Thor",
+          price: 10,
           quantity: 100,
         })
         .expect("status", 409)
@@ -123,10 +146,49 @@ describe("Products", () => {
         });
     });
 
+    it("Será validado que não é possível criar um produto com valor menor que zero", async () => {
+      await frisby
+        .post(`${url}/products`, {
+          name: "Produto do Batista",
+          price: -1,
+          quantity: 1,
+        })
+        .expect("status", 422)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '"price" must be a number larger than or equal to 1'
+          );
+        });
+    });
+
+    it("Será validado que não é possível criar um produto com valor igual a zero", async () => {
+      await frisby
+        .post(`${url}/products`, {
+          name: "Produto do Batista",
+          price: 0,
+          quantity: 1,
+        })
+        .expect("status", 422)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '"price" must be a number larger than or equal to 1'
+          );
+        });
+    });
+
     it("Será validado que não é possível criar um produto com quantidade menor que zero", async () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          price: 1,
           quantity: -1,
         })
         .expect("status", 422)
@@ -145,6 +207,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          price: 1,
           quantity: 0,
         })
         .expect("status", 422)
@@ -163,6 +226,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Produto do Batista",
+          price: 1,
           quantity: "string",
         })
         .expect("status", 422)
@@ -179,6 +243,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Arco do Gavião Arqueiro",
+          price: 1,
           quantity: 1,
         })
         .expect("status", 201)
@@ -186,8 +251,10 @@ describe("Products", () => {
           let { body } = res;
           body = JSON.parse(body);
           const productName = body.name;
+          const productPrice = body.price;
           const quantityProduct = body.quantity;
           expect(productName).toEqual("Arco do Gavião Arqueiro");
+          expect(productPrice).toEqual(1)
           expect(quantityProduct).toEqual(1);
           expect(body).toHaveProperty("id");
         });
@@ -203,20 +270,26 @@ describe("Products", () => {
           let { body } = res;
           body = JSON.parse(body);
           const firstProductName = body[0].name;
+          const firstProductPrice = body[0].price;
           const firstQuantityProduct = body[0].quantity;
           const secondProductName = body[1].name;
+          const secondProductPrice = body[1].price;
           const secondQuantityProduct = body[1].quantity;
           const thirdProductName = body[2].name;
+          const thirdProductPrice = body[2].price;
           const thirdQuantityProduct = body[2].quantity;
 
           expect(body[0]).toHaveProperty('id');
           expect(firstProductName).toEqual("Martelo de Thor");
+          expect(firstProductPrice).toEqual("10.00");
           expect(firstQuantityProduct).toEqual(10);
           expect(body[1]).toHaveProperty('id');
           expect(secondProductName).toEqual("Traje de encolhimento");
+          expect(secondProductPrice).toEqual("20.00");
           expect(secondQuantityProduct).toEqual(20);
           expect(body[2]).toHaveProperty('id');
           expect(thirdProductName).toEqual("Escudo do Capitão América");
+          expect(thirdProductPrice).toEqual("30.00");
           expect(thirdQuantityProduct).toEqual(30);
         });
     });
@@ -239,6 +312,7 @@ describe("Products", () => {
       await frisby
         .post(`${url}/products`, {
           name: "Armadura do Homem de Ferro",
+          price: 10,
           quantity: 40,
         })
         .expect("status", 201)
@@ -254,8 +328,10 @@ describe("Products", () => {
         .then((secondResponse) => {
           const { json } = secondResponse;
           const productName = json.name;
+          const productPrice = json.price;
           const quantityProduct = json.quantity;
           expect(productName).toEqual("Armadura do Homem de Ferro");
+          expect(productPrice).toEqual("10.00");
           expect(json).toHaveProperty("id");
           expect(quantityProduct).toEqual(40);
         });
@@ -263,7 +339,7 @@ describe("Products", () => {
   });
 
   describe("3 - Crie um endpoint para atualizar um produto", () => {
-    it("Será validado que não é possível atualizar um produto com o nome menor que 5 caracteres", async () => {
+    it("Será validado que não é possível atualizar um produto com o nome menor que 3 caracteres", async () => {
       let result;
       let resultProductId;
 
@@ -278,7 +354,8 @@ describe("Products", () => {
 
       await frisby
         .put(`${url}/products/${resultProductId}`, {
-          name: "Mar",
+          name: "Do",
+          price: 10,
           quantity: 10,
         })
         .expect("status", 422)
@@ -286,7 +363,65 @@ describe("Products", () => {
           const { json } = secondResponse;
           hasMessageField(json)
           expect(json.message).toEqual(
-            '"name" length must be at least 5 characters long'
+            '"name" length must be at least 3 characters long'
+          );
+        });
+    });
+
+    it("Será validado que não é possível atualizar um produto o valor menor que zero", async () => {
+      let result;
+      let resultProductId;
+
+      await frisby
+        .get(`${url}/products/`)
+        .expect("status", 200)
+        .then((response) => {
+          const { body } = response;
+          result = JSON.parse(body);
+          resultProductId = result[0].id;
+        });
+
+      await frisby
+        .put(`${url}/products/${resultProductId}`, {
+          name: "Martelo de Thor",
+          price: -1,
+          quantity: 1,
+        })
+        .expect("status", 422)
+        .then((secondResponse) => {
+          const { json } = secondResponse;
+          hasMessageField(json)
+          expect(json.message).toEqual(
+            '\"price\" must be a number larger than or equal to 1'
+          );
+        });
+    });
+
+    it("Será validado que não é possível atualizar um produto com o valor igual a zero", async () => {
+      let result;
+      let resultProductId;
+
+      await frisby
+        .get(`${url}/products/`)
+        .expect("status", 200)
+        .then((response) => {
+          const { body } = response;
+          result = JSON.parse(body);
+          resultProductId = result[0].id;
+        });
+
+      await frisby
+        .put(`${url}/products/${resultProductId}`, {
+          name: "Martelo de Thor",
+          price: 0,
+          quantity: 1,
+        })
+        .expect("status", 422)
+        .then((secondResponse) => {
+          const { json } = secondResponse;
+          hasMessageField(json)
+          expect(json.message).toEqual(
+            '\"price\" must be a number larger than or equal to 1'
           );
         });
     });
@@ -307,6 +442,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          price: 1,
           quantity: -1,
         })
         .expect("status", 422)
@@ -335,6 +471,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          price: 1,
           quantity: 0,
         })
         .expect("status", 422)
@@ -363,6 +500,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Martelo de Thor",
+          price: 1,
           quantity: "string",
         })
         .expect("status", 422)
@@ -389,14 +527,17 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${resultProductId}`, {
           name: "Machado de Thor",
+          price: 20,
           quantity: 20,
         })
         .expect("status", 200)
         .then((secondResponse) => {
           const { json } = secondResponse;
           const productName = json.name;
+          const productPrice = json.price;
           const quantityProduct = json.quantity;
           expect(productName).toEqual("Machado de Thor");
+          expect(productPrice).toEqual(20);
           expect(quantityProduct).toEqual(20);
         });
     });
@@ -405,6 +546,7 @@ describe("Products", () => {
       await frisby
         .put(`${url}/products/${INVALID_ID}`,{
           name: "produto inexistente",
+          price: 1,
           quantity: 1,
         })
         .expect("status", 404)
@@ -439,6 +581,7 @@ describe("Products", () => {
           body = JSON.parse(body);
           expect(body).toHaveProperty("id");
           expect(body).toHaveProperty("name");
+          expect(body).toHaveProperty("price");
           expect(body).toHaveProperty("quantity");
         });
 

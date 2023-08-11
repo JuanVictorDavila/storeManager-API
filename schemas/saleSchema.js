@@ -1,4 +1,3 @@
-// REF: validação usando Joi https://www.youtube.com/watch?v=xXjyqcDTkD0
 const Joi = require('joi');
 
 module.exports = Joi.object({

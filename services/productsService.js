@@ -1,17 +1,17 @@
 const productsModel = require('../models/productsModel');
 const productSchema = require('../schemas/productSchema');
 
-const validateProducts = ({ name, quantity }) => {
-  const validation = productSchema.validate({ name, quantity });
+const validateProducts = ({ name, price, quantity }) => {
+  const validation = productSchema.validate({ name, price, quantity });
   return validation;
 };
 
-const create = async ({ name, quantity }) => {  
+const create = async ({ name, price, quantity }) => {  
   const product = await productsModel.getByName(name);
   if (product) return { error: { code: 'alreadyExists', message: 'Product already exists' } };
 
-  const { id } = await productsModel.create({ name, quantity });
-  return { id, name, quantity };
+  const { id } = await productsModel.create({ name, price, quantity });
+  return { id, name, price, quantity };
 };
 
 const getAll = async () => productsModel.getAll();
@@ -22,11 +22,11 @@ const getById = async (id) => {
   return product;   
 };
 
-const update = async (id, { name, quantity }) => {
+const update = async (id, { name, price, quantity }) => {
   const product = await productsModel.getById(id);
   if (!product) return { error: { code: 'notFound', message: 'Product not found' } };
-  await productsModel.update(id, { name, quantity });
-  return { id, name, quantity };
+  await productsModel.update(id, { name, price, quantity });
+  return { id, name, price, quantity };
 };
 
 const del = async (id) => {

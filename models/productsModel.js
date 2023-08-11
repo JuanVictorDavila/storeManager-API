@@ -1,8 +1,8 @@
 const connection = require('./connection');
 
-const create = async ({ name, quantity }) => {
-  const query = 'INSERT INTO products (name, quantity) VALUES (?,?)';
-  const [{ insertId: id }] = await connection.execute(query, [name, quantity]);
+const create = async ({ name, price, quantity }) => {
+  const query = 'INSERT INTO products (name, price, quantity) VALUES (?,?,?)';
+  const [{ insertId: id }] = await connection.execute(query, [name, price, quantity]);
   return { id };
 };
 
@@ -24,9 +24,9 @@ const getById = async (id) => {
   return product;
 };
 
-const update = async (id, { name, quantity }) => {
-  const query = 'UPDATE products SET name = ?, quantity = ? WHERE id = ?';
-  await connection.execute(query, [name, quantity, id]);
+const update = async (id, { name, price, quantity }) => {
+  const query = 'UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?';
+  await connection.execute(query, [name, price, quantity, id]);
 };
 
 const del = async (id) => {
