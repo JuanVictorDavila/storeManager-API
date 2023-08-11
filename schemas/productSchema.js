@@ -13,6 +13,12 @@ module.exports = Joi.object({
     'string.empty': '"description" must contain value',
     'any.required': '"description" is required',
   }),
+  category: Joi.string().min(3).required().messages({
+    'string.min': '"category" length must be at least 3 characters long',
+    'string.base': '"category" should be a string',
+    'string.empty': '"category" must contain value',
+    'any.required': '"category" is required',
+  }),
   price: Joi.number().min(1).required().messages({
     'number.min': '"price" must be a number larger than or equal to 1',
     'number.base': '"price" must be a number larger than or equal to 1',
