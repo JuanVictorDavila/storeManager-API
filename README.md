@@ -1,11 +1,11 @@
-# Boas vindas ao repositório do projeto Store Manager!
+# Boas vindas ao repositório do projeto Store Manager-API
 
 ---
 
 # Sumário
 
 - [Habilidades](#habilidades)
-  - [O que deverá ser desenvolvido](#o-que-deverá-ser-desenvolvido)
+  - [O que foi desenvolvido](#o-que-foi-desenvolvido)
   - [Desenvolvimento](#desenvolvimento)
 - [Como desenvolver](#como-desenvolver)
   - [Conexão com o Banco](#conexão-com-o-banco)
@@ -15,23 +15,23 @@
   - [Lista de requisitos](#lista-de-requisitos)
 
     `Requisitos Primários`
-    - [1 - Crie um endpoint para o cadastro de produtos](#1---crie-um-endpoint-para-o-cadastro-de-produtos)
-    - [2 - Crie um endpoint para listar os produtos](#2---crie-um-endpoint-para-listar-os-produtos)
-    - [3 - Crie um endpoint para atualizar um produto](#3---crie-um-endpoint-para-atualizar-um-produto)
-    - [4 - Crie um endpoint para deletar um produto](#4---crie-um-endpoint-para-deletar-um-produto)
-    - [5 - Crie um endpoint para cadastrar vendas](#5---crie-um-endpoint-para-cadastrar-vendas)
-    - [6 - Crie um endpoint para listar as vendas](#6---crie-um-endpoint-para-listar-as-vendas)
-    - [7 - Crie um endpoint para atualizar uma venda](#7---crie-um-endpoint-para-atualizar-uma-venda)
-    - [8 - Escreva testes para cobrir 35% das camadas da sua aplicação](#8---escreva-testes-para-cobrir-35-das-camadas-da-sua-aplicação)
-    - [9 - Escreva testes para cobrir 40% das camadas da sua aplicação](#9---escreva-testes-para-cobrir-40-das-camadas-da-sua-aplicação)
+    - [1 - Criar um endpoint para o cadastro de produtos](#1---criar-um-endpoint-para-o-cadastro-de-produtos)
+    - [2 - Criar um endpoint para listar os produtos](#2---criar-um-endpoint-para-listar-os-produtos)
+    - [3 - Criar um endpoint para atualizar um produto](#3---criar-um-endpoint-para-atualizar-um-produto)
+    - [4 - Criar um endpoint para deletar um produto](#4---criar-um-endpoint-para-deletar-um-produto)
+    - [5 - Criar um endpoint para cadastrar vendas](#5---criar-um-endpoint-para-cadastrar-vendas)
+    - [6 - Criar um endpoint para listar as vendas](#6---criar-um-endpoint-para-listar-as-vendas)
+    - [7 - Criar um endpoint para atualizar uma venda](#7---criar-um-endpoint-para-atualizar-uma-venda)
+    - [8 - Escrever testes para cobrir 35% das camadas da sua aplicação](#8---escrever-testes-para-cobrir-35-das-camadas-da-aplicação)
+    - [9 - Escrever testes para cobrir 40% das camadas da sua aplicação](#9---escrever-testes-para-cobrir-40-das-camadas-da-aplicação)
 
     `Requisitos Secundários`
 
-    - [10 - Crie um endpoint para deletar uma venda](#10---crie-um-endpoint-para-deletar-uma-venda)
-    - [11 - Atualize a quantidade de produtos](#11---atualize-a-quantidade-de-produtos)
-    - [12 - Valide a quantidade de produtos](#12---valide-a-quantidade-de-produtos)
-    - [13 - Escreva testes para cobrir 50% das camadas da sua aplicação](#13---escreva-testes-para-cobrir-50-das-camadas-da-sua-aplicação)
-    - [14 - Escreva testes para cobrir 60% das camadas da sua aplicação](#14---escreva-testes-para-cobrir-60-das-camadas-da-sua-aplicação)
+    - [10 - Criar um endpoint para deletar uma venda](#10---criar-um-endpoint-para-deletar-uma-venda)
+    - [11 - Atualizar a quantidade de produtos](#11---atualizar-a-quantidade-de-produtos)
+    - [12 - Validar a quantidade de produtos](#12---validar-a-quantidade-de-produtos)
+    - [13 - Escrever testes para cobrir 50% das camadas da sua aplicação](#13---escrever-testes-para-cobrir-50-das-camadas-da-aplicação)
+    - [14 - Escrever testes para cobrir 60% das camadas da sua aplicação](#14---escrever-testes-para-cobrir-60-das-camadas-da-aplicação)
 
 ---
 
@@ -50,21 +50,21 @@ Nesse projeto, eu fui capaz de:
 
 ---
 
-## O que deverá ser desenvolvido
+## O que foi desenvolvido
 
-Você vai desenvolver uma API utilizando a arquitetura MSC!
+Uma API utilizando a arquitetura MSC!
 
-A API a ser construída trata-se de um sistema de gerenciamento de vendas, onde será possível criar, visualizar, deletar e atualizar produtos e vendas.
+A API construída trata-se de um sistema de gerenciamento de vendas, onde será possível criar, visualizar, deletar e atualizar produtos e vendas.
 
 ---
 
 ## Desenvolvimento
 
-Você vai desenvolver todas as camadas da API (Models, Services caso necessário, e Controllers).
+Foram todas as camadas MSC da API (Models, Services caso necessário, e Controllers).
 
 Através dessa aplicação, será possível realizar as operações básicas que se pode fazer em um determinado banco de dados: Criação, Leitura, Atualização e Exclusão (ou `CRUD`, para as pessoas mais mais íntimas 😜).
 
-Você deve utilizar o banco MySQL para a gestão de dados. Além disso, a API deve ser RESTful.
+Foi utilizado o banco MySQL para a gestão de dados. Além disso, a API é RESTful.
 
 ⚠️ **Dicas Importantes** ⚠️:
 
@@ -72,19 +72,14 @@ Você deve utilizar o banco MySQL para a gestão de dados. Além disso, a API de
 
 - Para **todos os endpoints** garanta que:
 
-  - Caso o recurso **não seja encontrado**, **aconteça um erro erro**, ou **haja dados inválidos** na sua requisição, sua API retorne o status HTTP adequado com o body `{ message: <mensagem de erro> }`.
-  - Todos os retornos de erro devem seguir o mesmo formato.
-  - Para gerar os objetos de erro personalizados, você pode utilizar uma biblioteca de erros, como o [`boom`](https://www.npmjs.com/package/@hapi/boom).
+  - Caso o recurso **não seja encontrado**, **aconteça um erro erro**, ou **haja dados inválidos** na requisição, a API retorna o status HTTP adequado com o body `{ message: <mensagem de erro> }`.
+  - Todos os retornos de erro seguiram o mesmo formato.
 
-- Você pode utilizar middlewares e objetos de erro personalizados para que não tenha que repetir a lógica de tratamento de erro em vários lugares. Não se esqueça também do [express-rescue](https://www.npmjs.com/package/express-rescue), ele pode facilitar muito o trabalho de tratar erros.
+- Foram utilizados middlewares e objetos de erro personalizados para que não tenha que repetir a lógica de tratamento de erro em vários lugares. Lembrando também do [express-rescue](https://www.npmjs.com/package/express-rescue), ele facilitou muito o trabalho de tratar erros.
 
-- Quando estiver na dúvida sobre qual status HTTP utilizar, você pode consultar sites como o [httpstatuses.com](https://httpstatuses.com/), [restapitutorial.com](https://www.restapitutorial.com/httpstatuscodes.html) ou a [documentação sobre o assunto no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status). Com o tempo, você vai lembrar com facilidade o significado dos códigos mais comuns.
+- Em caso de dúvida sobre qual status HTTP utilizar, foram consultados sites como o [httpstatuses.com](https://httpstatuses.com/), [restapitutorial.com](https://www.restapitutorial.com/httpstatuscodes.html) e a [documentação sobre o assunto no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status).
 
-- Para realizar a validação dos dados, você pode utilizar pacotes como [`Joi`](https://www.npmjs.com/package/@hapi/joi) ou o [`Expresso Validator`](https://www.npmjs.com/package/@expresso/validator). Caso prefira, você também pode realizar a validação de forma manual.
-
----
-
-Atenção :warning: Não rode o comando npm audit fix! Ele atualiza várias dependências do projeto, e essa atualização gera conflitos com o avaliador.
+- Para realizar a validação dos dados, foram utilizados pacotes como [`Joi`](https://www.npmjs.com/package/@hapi/joi) e o [`Expresso Validator`](https://www.npmjs.com/package/@expresso/validator).
 
 ---
 
@@ -92,43 +87,32 @@ Atenção :warning: Não rode o comando npm audit fix! Ele atualiza várias depe
 
 ### Todos os seus endpoints devem estar no padrão REST
 
-- Use os verbos HTTP adequados para cada operação.
+- Usando os verbos HTTP adequados para cada operação.
 
-- Agrupe e padronize suas URL em cada recurso.
+- Agrupando e padronizando as URL em cada recurso.
 
-- Garanta que seus endpoints sempre retornem uma resposta, havendo sucesso nas operações ou não.
+- Garantindo que os endpoints sempre retornem uma resposta, havendo sucesso nas operações ou não.
 
-- Retorne os códigos de status corretos (recurso criado, erro de validação, autorização, etc).
+- Retornando os códigos de status corretos (recurso criado, erro de validação, autorização, etc).
 
-### Cada camada da sua API deve estar em sua respectiva pasta
+### Cada camada da API deve estar em sua respectiva pasta
 
-- Models devem estar na pasta `models`, **na raiz do projeto**
+- Models está na pasta `models`, **na raiz do projeto**
 
-- Services devem estar na pasta `services`, **na raiz do projeto**
+- Services está na pasta `services`, **na raiz do projeto**
 
-- Controllers devem estar na pasta `controllers`, **na raiz do projeto**
+- Controllers está na pasta `controllers`, **na raiz do projeto**
 
-### Para escrever seus própios arquivos de teste
+### Para escrever os arquivos de teste
 
-- Utilize o **mocha**, **chai** e **sinon** para escrever seus testes
+- Utilizei o **mocha**, **chai** e **sinon** para escrever os testes
 
-- Coloque todos os testes de `models` no arquivo `test/unit/models.js`
+- Coloquei todos os testes de `models` no arquivo `test/unit/models.js`
 
-- Coloque todos os testes de `services` no arquivo `test/unit/services.js`
+- Coloquei todos os testes de `services` no arquivo `test/unit/services.js`
 
-- Coloque todos os testes de `controllers` no arquivo `test/unit/controllers.js`
+- Coloquei todos os testes de `controllers` no arquivo `test/unit/controllers.js`
 
-### Arquivo index.js
-
-Há um arquivo `index.js` no repositório. Não remova, nele, o seguinte trecho de código:
-
-```javascript
-app.get('/', (request, response) => {
-  response.send();
-});
-```
-
-Isso está configurado para o avaliador funcionar.
 
 ### Conexão com o Banco:
 
@@ -150,7 +134,7 @@ MYSQL_PASSWORD=1234
 PORT=3000
 ```
 
-**Nota**: A variável **PORT** do arquivo `.env` deve ser utilizada para a conexão com o servidor. É importante utilizar essa variável para os testes serem executados corretamente tanto na máquina local quanto no avaliador.
+**Nota**: A variável **PORT** do arquivo `.env` deve ser utilizada para a conexão com o servidor. É importante utilizar essa variável para os testes serem executados corretamente na máquina local.
 
 Com essas configurações, enquanto estiver na máquina local, o banco será executado normalmente via localhost (possibilitando os testes via `npm test`).
 Como o arquivo `.env` não será enviado para o GitHub (não se preocupe com isso, pois já está configurado no `.gitignore`), o avaliador utilizará as suas próprias variáveis de ambiente.
@@ -182,11 +166,11 @@ A tabela `sales_products`, é a tabela que faz o relacionamento `N:N` entre `pro
 
 ## Linter
 
-Usaremos o [ESLint](https://eslint.org/) para fazer a análise estática do seu código.
+Foi utilizado o [ESLint](https://eslint.org/) para fazer a análise estática do código.
 
 Este projeto já vem com as dependências relacionadas ao _linter_ configuradas no arquivos `package.json`.
 
-Para poder rodar os `ESLint` em um projeto basta executar o comando `npm install` dentro do projeto e depois `npm run lint`. Se a análise do `ESLint` encontrar problemas no seu código, tais problemas serão mostrados no seu terminal. Se não houver problema no seu código, nada será impresso no seu terminal.
+Para poder rodar os `ESLint` em um projeto basta executar o comando `npm install` dentro do projeto e depois `npm run lint`. Se a análise do `ESLint` encontrar problemas no código, tais problemas serão mostrados no seu terminal. Se não houver problema no código, nada será impresso no seu terminal.
 
 Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em extensions e baixar o [plugin `ESLint`](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
@@ -194,7 +178,7 @@ Você pode também instalar o plugin do `ESLint` no `VSCode`, bastar ir em exten
 
 ## Testes
 
-Usaremos o [Jest]() e o [Frisby] para fazer os testes de api.
+Foi utilizado o [Jest]() e o [Frisby] para fazer os testes de api.
 
 Na seção [Conexão com o Banco](#conexão-com-o-banco), está especificado como a conexão deve ser feita, para que os testes rodem.
 
@@ -208,7 +192,7 @@ Para poder executar os testes basta executar comando `npm tests` e o resultado s
 
 ## Dica: desativando testes
 
-Especialmente no início, quando a maioria dos testes está falhando, a saída após executar os testes é bastante poluída. Você pode desabilitar temporariamente um teste utilizando a função `skip` junto à função `it`. Como o nome indica, esta função "pula" um teste:
+Você pode desabilitar temporariamente um teste utilizando a função `skip` junto à função `it`. Como o nome indica, esta função "pula" um teste:
 
 ```js
 it.skip('it includes the text `Movie Cards Library` inside a h1 tag', () => {
@@ -222,13 +206,10 @@ Na saída da execução dos testes, você verá um <img src="./public/orange-cir
 
 ![image](./public/skipped-test.png)
 
-Uma estratégia é pular todos os testes no início e ir implementando um teste de cada vez, removendo dele a função `skip`.
-
-⚠️ Lembre-se de não entregar o projeto com nenhum teste ignorado. Testes ignorados serão tratados como testes falhando.
 
 ## Lista de requisitos
 
-### 1 - Crie um endpoint para o cadastro de produtos
+### 1 - Criar um endpoint para o cadastro de produtos
 
 - O endpoint deve ser acessível através do caminho (`/products`);
 
@@ -312,7 +293,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 2 - Crie um endpoint para listar os produtos
+### 2 - Criar um endpoint para listar os produtos
 
 - O endpoint deve ser acessível através do caminho (`/products`) ou (`/products/:id`);
 
@@ -360,7 +341,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 3 - Crie um endpoint para atualizar um produto
+### 3 - Criar um endpoint para atualizar um produto
 
 - O endpoint deve ser acessível através do caminho (`/products/:id`);
 
@@ -426,7 +407,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 4 - Crie um endpoint para deletar um produto
+### 4 - Criar um endpoint para deletar um produto
 
 - O endpoint deve ser acessível através do caminho (`/products/:id`);
 
@@ -455,7 +436,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 5 - Crie um endpoint para cadastrar vendas
+### 5 - Criar um endpoint para cadastrar vendas
 
 - O endpoint deve ser acessível através do caminho (`/sales`);
 
@@ -593,7 +574,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 6 - Crie um endpoint para listar as vendas
+### 6 - Criar um endpoint para listar as vendas
 
 - O endpoint deve ser acessível através do caminho (`/sales`) ou (`/sales/:id`);
 
@@ -650,7 +631,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 7 - Crie um endpoint para atualizar uma venda
+### 7 - Criar um endpoint para atualizar uma venda
 
 - O endpoint deve ser acessível através do caminho (`/sales/:id`);
 
@@ -757,13 +738,13 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 8 - Escreva testes para cobrir 35% das camadas da sua aplicação
+### 8 - Escrever testes para cobrir 35% das camadas da aplicação
 
-- Seus arquivos de teste devem ficar no diretório `test/unit`, **como citado [aqui](#para-escrever-seus-própios-arquivos-de-teste)**;
+- Os arquivos de teste devem ficar no diretório `/test`;
 
-- Seus testes da `model` devem fazer mock do banco de dados obrigatóriamente;
+- Os testes da `model` devem fazer mock do banco de dados obrigatóriamente;
 
-- Opcionalmente você pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
+- Opcionalmente pode parar o serviço do `MYSQL` em sua máquina. Para rodar os teste utilize `npm run test:mocha`;
 
 <details close>
   <summary>O que será validado</summary>
@@ -777,13 +758,13 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 9 - Escreva testes para cobrir 40% das camadas da sua aplicação
+### 9 - Escrever testes para cobrir 40% das camadas da aplicação
 
-- Seus arquivos de teste devem ficar no diretório `test/unit`, **como citado [aqui](#para-escrever-seus-própios-arquivos-de-teste)**
+- Os arquivos de teste devem ficar no diretório `test`;
 
-- Seus testes da `model` devem fazer mock do banco de dados obrigatóriamente;
+- Os testes da `model` devem fazer mock do banco de dados obrigatóriamente;
 
-- Opcionalmente você pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
+- Opcionalmente pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
 
 <details close>
   <summary>O que será validado</summary>
@@ -799,7 +780,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ## Requisitos Secundários
 
-### 10 - Crie um endpoint para deletar uma venda
+### 10 - Criar um endpoint para deletar uma venda
 
 - O endpoint deve ser acessível através do caminho (`/sales/:id`);
 
@@ -836,7 +817,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 11 - Atualize a quantidade de produtos
+### 11 - Atualizar a quantidade de produtos
 
 - Ao realizar uma venda, atualizá-la ou deletá-la, você deve também atualizar a quantidade do produto em questão presente na tabela responsável pelos produtos;
 
@@ -855,7 +836,7 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 12 - Valide a quantidade de produtos
+### 12 - Validar a quantidade de produtos
 
 - Um produto nunca deve ter a quantidade em estoque menor que 0;
 
@@ -884,13 +865,13 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 13 - Escreva testes para cobrir 50% das camadas da sua aplicação
+### 13 - Escrever testes para cobrir 50% das camadas da aplicação
 
-- Seus arquivos de teste devem ficar no diretório `test/unit`, **como citado [aqui](#para-escrever-seus-própios-arquivos-de-teste)**;
+- Os arquivos de teste devem ficar no diretório `test`;
 
-- Seus testes da `model` devem fazer mock do banco de dados obrigatóriamente;
+- Os testes da `model` devem fazer mock do banco de dados obrigatóriamente;
 
-- Opcionalmente você pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
+- Opcionalmente pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
 
 <details close>
   <summary>O que será validado</summary>
@@ -904,13 +885,13 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 
 ---
 
-### 14 - Escreva testes para cobrir 60% das camadas da sua aplicação
+### 14 - Escrever testes para cobrir 60% das camadas da aplicação
 
-- Seus arquivos de teste devem ficar no diretório `test/unit`, **como citado [aqui](#para-escrever-seus-própios-arquivos-de-teste)**;
+- Os arquivos de teste devem ficar no diretório `test`;
 
-- Seus testes da `model` devem fazer mock do banco de dados obrigatóriamente;
+- Os testes da `model` devem fazer mock do banco de dados obrigatóriamente;
 
-- Opcionalmente você pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
+- Opcionalmente pode parar o serviço do `MYSQL` em sua máquina. Para rodar seus teste utilize `npm run test:mocha`;
 
 <details close>
   <summary>O que será validado</summary>
@@ -923,5 +904,3 @@ Uma estratégia é pular todos os testes no início e ir implementando um teste 
 </details>
 
 ---
-
-⚠ Lembre-se que garantir que todas as _issues_ comentadas pelo **Lint** estão resolvidas! ⚠
