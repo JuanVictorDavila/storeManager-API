@@ -74,13 +74,14 @@ describe("Products", () => {
           );
         });
     })
-    it("Será validado que o campo quantity esteja presente no body da requisição", async()=> {
+
+    it("Será validade que o campo description esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
-          name: "Olho de Thundera",
-          description: "toy",
+          name:"Olho de Thundera",
+          // description: "toy",
           price: 1,
-          // quantity: 2,
+          quantity: 2
         })
         .expect("status", 400)
         .then((res) => {
@@ -89,10 +90,11 @@ describe("Products", () => {
           hasMessageField(body);
           const { message } = body;
           expect(message).toEqual(
-            '\"quantity\" is required'
+            '\"description\" is required'
           );
         });
     })
+
     it("Será validade que o campo price esteja presente no body da requisicão", async() => {
       await frisby
         .post(`${url}/products/`, {
@@ -113,6 +115,26 @@ describe("Products", () => {
         });
     })
 
+    it("Será validado que o campo quantity esteja presente no body da requisição", async()=> {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Olho de Thundera",
+          description: "toy",
+          price: 1,
+          // quantity: 2,
+        })
+        .expect("status", 400)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '\"quantity\" is required'
+          );
+        });
+    })
+    
     it("Será validado que não é possível criar um produto com o nome menor que 3 caracteres", async () => {
       await frisby
         .post(`${url}/products/`, {
@@ -148,6 +170,26 @@ describe("Products", () => {
           hasMessageField(body);
           const { message } = body;
           expect(message).toEqual("Product already exists");
+        });
+    });
+
+    it("Será validado que não é possível criar um produto com a descrição menor que 3 caracteres", async () => {
+      await frisby
+        .post(`${url}/products/`, {
+          name: "Beyblade",
+          description: "It",
+          price: 10,
+          quantity: 100,
+        })
+        .expect("status", 422)
+        .then((res) => {
+          let { body } = res;
+          body = JSON.parse(body);
+          hasMessageField(body);
+          const { message } = body;
+          expect(message).toEqual(
+            '"description" length must be at least 3 characters long'
+          );
         });
     });
 
