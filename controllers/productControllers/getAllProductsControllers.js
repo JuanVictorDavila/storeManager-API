@@ -1,7 +1,7 @@
-const productsService = require('../../services/productsService');
+const getAllProductsService = require('../../services/productsServices/getAllProductsService');
 
 const getAll = async (_req, res) => {
-  const products = await productsService.getAll();
+  const products = await getAllProductsService();
   res.status(200).json(products);
 };
 

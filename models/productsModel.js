@@ -53,7 +53,7 @@ const update = async (id, { name, description, category, manufacturer, price, qu
   await connection.execute(query, [name, description, category, manufacturer, price, quantity, id]);
 };
 
-const del = async (id) => {
+const remove = async (id) => {
   const query = 'DELETE FROM products WHERE id = ?';
   await connection.execute(query, [id]);
 };
@@ -71,6 +71,6 @@ module.exports = {
   getAll,
   getById,
   update,
-  del,
+  remove,
   updateProductsQty,
 };

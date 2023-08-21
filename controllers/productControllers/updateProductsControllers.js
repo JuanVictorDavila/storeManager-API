@@ -1,9 +1,9 @@
-const productsService = require('../../services/productsService');
+const updateProductsService = require('../../services/productsServices/updateProductsService');
 
 const update = async (req, res, next) => {
   const { id } = req.params;
   const { name, description, category, manufacturer, price, quantity } = req.body;
-  const product = await productsService.update(
+  const product = await updateProductsService(
     id, 
     { 
       name, 
