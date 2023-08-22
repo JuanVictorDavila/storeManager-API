@@ -1,23 +1,24 @@
-const salesService = require('../services/salesService');
+const salesService = require('../../services/salesService');
+const validateSale = require('../salesControllers/validateSaleController')
 
-const validateSale = (req, _res, next) => {
+/* const validateSale = (req, _res, next) => {
   const products = req.body;
   const validation = salesService.validateSale(products);
   if (validation.error) return next(validation.error);
   next();
-};
+}; */
 
-const create = async (req, res, next) => {
+/* const create = async (req, res, next) => {
   const products = req.body;
   const sale = await salesService.create(products);
   if (sale.error) return next(sale.error);
   res.status(201).json(sale);
-};
+}; */
 
-const getAll = async (_req, res) => {
+/* const getAll = async (_req, res) => {
   const sales = await salesService.getAll();
   res.status(200).json(sales);
-};
+}; */
 
 const getById = async (req, res, next) => {
   const { id } = req.params;
@@ -42,9 +43,9 @@ const del = async (req, res, next) => {
 };
 
 module.exports = {
-  create,
+  // create,
   validateSale,
-  getAll,
+  //getAll,
   getById,
   update,
   del,

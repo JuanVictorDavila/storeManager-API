@@ -1,9 +1,10 @@
-const productsModel = require('../../models/productsModel')
+const getByIdProductsModel = require('../../models/productsModels/getByIdProductsModel')
+const removeProductsModel = require('../../models/productsModels/removeProductsModel')
 
 const remove = async (id) => {
-  const product = await productsModel.getById(id);
+  const product = await getByIdProductsModel(id);
   if (!product) return { error: { code: 'notFound', message: 'Product not found' } };
-  await productsModel.remove(id);
+  await removeProductsModel(id);
   return product;
 };
 

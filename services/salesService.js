@@ -1,5 +1,6 @@
-const salesModel = require('../models/salesModel');
-const productsModel = require('../models/productsModel');
+const salesModel = require('../models/salesModels/salesModel');
+const getByIdProductsModel = require('../models/productsModels/getByIdProductsModel');
+const updateProductsQuantityModel = require('../models/productsModels/updateProductsQuantityModel')
 const saleSchema = require('../schemas/saleSchema');
 
 const validateSale = (products) => {
@@ -16,7 +17,7 @@ const validateSale = (products) => {
 
 const validatePoductsQty = async (products) => {
   const dbProducts = await Promise.all(products.map(
-    ({ product_id: id }) => productsModel.getById(id),
+    ({ product_id: id }) => getByIdProductsModel(id),
   ));
   for (let i = 0; i < products.length; i += 1) {
     if (products[i].quantity > dbProducts[i].quantity) return false;
@@ -34,7 +35,7 @@ const create = async (products) => {
   if (!valid) { 
     return { error: { code: 'amountError', message: 'Such amount is not permitted to sell' } }; 
   } 
-  await productsModel.updateProductsQty(products, '-');
+  await updateProductsQuantityModel(products, '-');
   const { id } = await salesModel.create(products);
   return { id, itemsSold: products };
 };
@@ -65,7 +66,7 @@ const del = async (id) => {
   const sale = await salesModel.getById(id);
   if (sale.length === 0) return { error: { code: 'notFound', message: 'Sale not found' } };
   await salesModel.del(id);
-  await productsModel.updateProductsQty(sale, '+');
+  await updateProductsQuantityModel(sale, '+');
   return sale;
 };
 
