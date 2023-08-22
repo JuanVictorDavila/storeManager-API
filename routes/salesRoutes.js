@@ -1,13 +1,19 @@
 const express = require('express');
 const rescue = require('express-rescue');
-const salesController = require('../controllers/salesController');
+
+const validateSaleController = require('../controllers/salesControllers/validateSalesController')
+const createSalesController = require('../controllers/salesControllers/createSalesController')
+const getAllSalesController = require('../controllers/salesControllers/getAllSalesController')
+const getByIdSalesController = require('../controllers/salesControllers/getByIdSalesController')
+const updateSalesController = require('../controllers/salesControllers/updateSalesController')
+const removeSalesController = require('../controllers/salesControllers/removeSalesController')
 
 const router = express.Router();
 
-router.post('/', rescue(salesController.validateSale), rescue(salesController.create));
-router.get('/', rescue(salesController.getAll));
-router.get('/:id', rescue(salesController.getById));
-router.put('/:id', rescue(salesController.validateSale), rescue(salesController.update));
-router.delete('/:id', rescue(salesController.del));
+router.post('/', rescue(validateSaleController), rescue(createSalesController));
+router.get('/', rescue(getAllSalesController));
+router.get('/:id', rescue(getByIdSalesController));
+router.put('/:id', rescue(validateSaleController), rescue(updateSalesController));
+router.delete('/:id', rescue(removeSalesController));
 
 module.exports = router;

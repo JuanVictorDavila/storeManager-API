@@ -1,10 +1,11 @@
-const productsModel = require('../../models/productsModel');
+const getByNameproductsModel = require('../../models/productsModels/getByNameProductsModel');
+const createProductsModel = require('../../models/productsModels/createProductsModel');
 
 const create = async ({ name, description, category, manufacturer, price, quantity }) => {  
-  const product = await productsModel.getByName(name);
+  const product = await getByNameproductsModel(name);
   if (product) return { error: { code: 'alreadyExists', message: 'Product already exists' } };
 
-  const { id } = await productsModel.create(
+  const { id } = await createProductsModel(
     { 
       name,
       description,

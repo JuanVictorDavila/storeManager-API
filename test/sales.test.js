@@ -4,20 +4,16 @@ const Importer = require('mysql-import');
 require('dotenv').config();
 describe('Sales', () => {
   const products = [
-    { name: 'Martelo de Thor', quantity: 10 },
-    { name: 'Traje de encolhimento', quantity: 20 },
-    { name: 'Escudo do Capitão América', quantity: 30 },
+    { name: "Martelo de Thor", description: "toy", category:"toy", manufacturer: "Hasbro", price:10 ,quantity: 10 },
+    { name: "Traje de encolhimento", description: "costume", category: "costume", manufacturer: "Hasbro", price:20, quantity: 20 },
+    { name: "Escudo do Capitão América", description: "toy", category: "toy", manufacturer: "Hasbro", price:30, quantity: 30 },
   ];
   const url = `http://localhost:${process.env.PORT}`;
   const INVALID_ID = 99999;
   let connection;
 
   beforeAll(async () => {
-    const {
-      MYSQL_USER,
-      MYSQL_PASSWORD,
-      MYSQL_HOST
-    } = process.env;
+    const { MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST } = process.env;
 
     connection = mysql.createPool({
       host: MYSQL_HOST,
@@ -25,9 +21,11 @@ describe('Sales', () => {
       password: MYSQL_PASSWORD,
     });
 
-    const importer = new Importer(
-      { user: MYSQL_USER, password: MYSQL_PASSWORD, host: MYSQL_HOST }
-    );
+    const importer = new Importer({
+      user: MYSQL_USER,
+      password: MYSQL_PASSWORD,
+      host: MYSQL_HOST,
+    });
 
     await importer.import('./StoreManager.sql');
 
@@ -35,9 +33,18 @@ describe('Sales', () => {
   });
 
   beforeEach(async () => {
-    const values = products.map(({name, quantity}) => [name, quantity]);
-    await connection.query(
-      'INSERT INTO StoreManager.products (name, quantity) VALUES ?',
+    const values = products.map((
+      {
+        name,
+        description, 
+        category, 
+        manufacturer, 
+        price, 
+        quantity,
+      }) => [name, description, category, manufacturer, price, quantity]);
+    
+      await connection.query(
+        "INSERT INTO StoreManager.products (name, description, category, manufacturer, price, quantity) VALUES ?",
       [values],
     )
   });
