@@ -1,8 +1,8 @@
-const salesService = require('../../services/salesService');
+const validateSalesService = require('../../services/salesServices/validateSale');
 
 const validateSale = (req, _res, next) => {
   const products = req.body;
-  const validation = salesService.validateSale(products);
+  const validation = validateSalesService(products);
   if (validation.error) return next(validation.error);
   next();
 };
