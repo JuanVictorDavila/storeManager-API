@@ -1,4 +1,4 @@
-# Boas vindas ao repositório do projeto Store Manager-API
+# Boas vindas ao repositório Store Manager-API
 
 ---
 
